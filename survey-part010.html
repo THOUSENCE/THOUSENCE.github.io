@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能信任评估 - 第四部分</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- 性能优化 -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <script type="module">
+        // 核心依赖
+        import { db } from './js/firebase-config.js';
+        import { surveyManager, initProgress } from './js/survey.js';
+        
+        // 初始化管理实例
+        window.surveyManager = surveyManager;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>情境评估问卷</h1>
+            <div class="progress-bar" role="progressbar"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="72">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <form id="evalForm" class="questionnaire-part" 
+              aria-label="情境评估部分">
+            <!-- 视频模块 -->
+            <section class="video-card" aria-labelledby="video-desc">
+                <div class="scenario-description">
+                    <h2>【与Deepseek聊天】</h2>
+                <p class="scenario-text">情境二<br>
+                    <p>问题：”strawberry“中有几个“r”？</p>
+                    <p>--------------------------------------------------------------</p>
+                    <p>回答：单词“strawberry”的正确拼写为 s-t-r-a-w-b-e-r-r-y。逐个字母检查后，可以发现以下位置含有字母“r”：</p>
+                    <p>1.	第3个字母：r</p>
+                    <p>2.	第8个字母：r</p>
+                    <p>3.	第9个字母：r</p>
+                    <p>因此，“strawberry”中共有3个字母“r”。</p>
+                    <p>答案：3个</p>
+                </p>
+                </div>
+            </section>
+
+            <section class="evaluation-section" aria-labelledby="risk-perception">
+                <h2 id="risk-perception" class="section-title">感知风险</h2>
+                <div class="question-group">
+                    <h3>1. 我担心使用该人工智能技术会泄露我的隐私，会对我造成负面的影响。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q1" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q1" value="2"> 不同意</label>
+                        <label><input type="radio" name="q1" value="3"> 中立</label>
+                        <label><input type="radio" name="q1" value="4"> 同意</label>
+                        <label><input type="radio" name="q1" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-group">
+                    <h3>2. 我担心在使用该人工智能技术过程中操作失误会导致财产损失。</h3>
+                    <div class="likert-scale">
+                        <!-- 注意name改为q2 -->
+                        <label><input type="radio" name="q2" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q2" value="2"> 不同意</label>
+                        <label><input type="radio" name="q2" value="3"> 中立</label>
+                        <label><input type="radio" name="q2" value="4"> 同意</label>
+                        <label><input type="radio" name="q2" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h3>3. 我担心技术供应商过多收集我的信息，用做其他目的。</h3>
+                    <div class="likert-scale">
+                        <!-- 注意name改为q2 -->
+                        <label><input type="radio" name="q3" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q3" value="2"> 不同意</label>
+                        <label><input type="radio" name="q3" value="3"> 中立</label>
+                        <label><input type="radio" name="q3" value="4"> 同意</label>
+                        <label><input type="radio" name="q3" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h3>4. 我担心该人工智能技术会威胁我的人身安全，如医疗事故。</h3>
+                    <div class="likert-scale">
+                        <!-- 注意name改为q2 -->
+                        <label><input type="radio" name="q4" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q4" value="2"> 不同意</label>
+                        <label><input type="radio" name="q4" value="3"> 中立</label>
+                        <label><input type="radio" name="q4" value="4"> 同意</label>
+                        <label><input type="radio" name="q4" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+            <section class="evaluation-section" aria-labelledby="risk-perception">
+                <h2 id="risk-perception" class="section-title">信任度量-功能性(FT)</h2>
+                <div class="question-group">
+                    <h3>5. 我相信该人工智能能够为我提供服务。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q5" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q5" value="2"> 不同意</label>
+                        <label><input type="radio" name="q5" value="3"> 中立</label>
+                        <label><input type="radio" name="q5" value="4"> 同意</label>
+                        <label><input type="radio" name="q5" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                
+                <div class="question-group">
+                    <h3>6. 我相信该人工智能具备为我提供服务所需的功能。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q6" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q6" value="2"> 不同意</label>
+                        <label><input type="radio" name="q6" value="3"> 中立</label>
+                        <label><input type="radio" name="q6" value="4"> 同意</label>
+                        <label><input type="radio" name="q6" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h3>7. 我相信该人工智能总体来说能够为我提供我想要的服务。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q7" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q7" value="2"> 不同意</label>
+                        <label><input type="radio" name="q7" value="3"> 中立</label>
+                        <label><input type="radio" name="q7" value="4"> 同意</label>
+                        <label><input type="radio" name="q7" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+            <section class="evaluation-section" aria-labelledby="risk-perception">
+                <h2 id="risk-perception" class="section-title">信任度量-帮助性(HF)</h2>
+                <div class="question-group">
+                    <h3>8. 我相信该人工智能能够通过它的功能满足我的求助需求。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q8" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q8" value="2"> 不同意</label>
+                        <label><input type="radio" name="q8" value="3"> 中立</label>
+                        <label><input type="radio" name="q8" value="4"> 同意</label>
+                        <label><input type="radio" name="q8" value="5"> 非常同意</label>
+                    </div>
+                </div>
+    
+                <div class="question-group">
+                    <h3>9. 我相信该人工智能能够供我需要的帮助。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q9" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q9" value="2"> 不同意</label>
+                        <label><input type="radio" name="q9" value="3"> 中立</label>
+                        <label><input type="radio" name="q9" value="4"> 同意</label>
+                        <label><input type="radio" name="q9" value="5"> 非常同意</label>
+                    </div>
+                </div>
+    
+                <div class="question-group">
+                    <h3>10. 我相信该人工智能在服务过程中能够根据需要提供有效的指导。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q10" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q10" value="2"> 不同意</label>
+                        <label><input type="radio" name="q10" value="3"> 中立</label>
+                        <label><input type="radio" name="q10" value="4"> 同意</label>
+                        <label><input type="radio" name="q10" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+            <section class="evaluation-section" aria-labelledby="risk-perception">
+                <h2 id="risk-perception" class="section-title">信任度量-可靠性(RB)</h2>
+                <div class="question-group">
+                    <h3>11. 我相信该人工智能是个非常可靠的人工智能。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q11" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q11" value="2"> 不同意</label>
+                        <label><input type="radio" name="q11" value="3"> 中立</label>
+                        <label><input type="radio" name="q11" value="4"> 同意</label>
+                        <label><input type="radio" name="q11" value="5"> 非常同意</label>
+                    </div>
+                </div>
+    
+                <div class="question-group">
+                    <h3>12. 我相信该人工智能不会让我失望。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q12" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q12" value="2"> 不同意</label>
+                        <label><input type="radio" name="q12" value="3"> 中立</label>
+                        <label><input type="radio" name="q12" value="4"> 同意</label>
+                        <label><input type="radio" name="q12" value="5"> 非常同意</label>
+                    </div>
+                </div>
+    
+                <div class="question-group">
+                    <h3>13. 我相信该人工智能非常值得信赖。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q13" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q13" value="2"> 不同意</label>
+                        <label><input type="radio" name="q13" value="3"> 中立</label>
+                        <label><input type="radio" name="q13" value="4"> 同意</label>
+                        <label><input type="radio" name="q13" value="5"> 非常同意</label>
+                    </div>
+                </div>
+    
+                <div class="question-group">
+                    <h3>14. 我相信该人工智能不会在我这里出现故障。</h3>
+                    <div class="likert-scale">
+                        <label><input type="radio" name="q14" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="q14" value="2"> 不同意</label>
+                        <label><input type="radio" name="q14" value="3"> 中立</label>
+                        <label><input type="radio" name="q14" value="4"> 同意</label>
+                        <label><input type="radio" name="q14" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="button-container">
+                <button type="submit" class="btn" aria-label="提交评估结果">
+                    继续
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <script type="module">
+        import { surveyManager, initProgress } from './js/survey.js';
+        import { showError } from './js/helpers.js';
+      
+        document.addEventListener('DOMContentLoaded', async () => {
+          try {
+            // 初始化进度条
+            initProgress(72);
+      
+            // 绑定表单提交
+            const form = document.getElementById('evalForm');
+            
+            form.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              
+              try {
+                // 保存情境评估数据
+                const formData = new FormData(e.target);
+                await surveyManager.saveFormData('scenario6_eval', formData);
+                await surveyManager.recordPageTime('scenario6_eval');
+      
+                // 跳转到下一环节
+                window.location.href = 'survey-part001.html';
+                
+              } catch (error) {
+                showError('数据保存失败，请检查网络连接');
+                console.error('提交错误:', error);
+              }
+            });
+      
+          } catch (error) {
+            showError('页面加载异常，请刷新重试');
+            console.error('初始化错误:', error);
+          }
+        });
+      </script>
+</body>
+</html>

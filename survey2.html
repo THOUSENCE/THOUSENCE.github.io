@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能信任调查问卷 - 第二部分</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- 性能优化 -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <script type="module">
+        // 核心依赖
+        import { db } from './js/firebase-config.js';
+        import { surveyManager, initProgress } from './js/survey.js';
+        
+        // 初始化管理实例
+        window.surveyManager = surveyManager;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>人工智能技术说明</h1>
+            <div class="progress-bar" role="progressbar" 
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="24">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <form id="techSurvey" class="questionnaire-part" 
+              aria-label="技术说明部分">
+            <!-- 技术说明卡片（保持原内容） -->
+            <section class="info-card ai-intro" aria-labelledby="ai-title">
+                <div class="icon-box" aria-hidden="true">🤖</div>
+                <h2 id="ai-title">人工智能（AI）</h2>
+                <p>人工智能是指计算机系统通过分析环境数据，模拟人类思维进行自主决策的技术。它借助各类传感器获取信息，运用智能算法识别规律，最终输出最优行动方案。这项技术正在推动医疗诊断、城市管理、工业制造等领域的智能化升级。</p>
+            </section>
+
+            <section class="info-card driving-intro" aria-labelledby="drive-title">
+                <div class="icon-box" aria-hidden="true">🚗</div>
+                <h2 id="drive-title">智能驾驶</h2>
+                <p>智能驾驶系统是能够自主感知路况并完成导航的车辆控制技术。通过雷达、摄像头、卫星定位等设备收集环境数据，结合实时地图和交通规则分析，车辆可自动完成加速、转向、制动等操作。该系统不仅能实现不同级别的自动驾驶功能（从辅助驾驶到完全无人驾驶），还能通过车辆间的协同通信提升道路通行效率，减少交通事故。</p>
+            </section>
+
+            <section class="info-card llm-intro" aria-labelledby="llm-title">
+                <div class="icon-box" aria-hidden="true">💬</div>
+                <h2 id="llm-title">大语言模型</h2>
+                <p>大语言模型是基于海量文本数据训练的人工智能程序（如ChatGPT），通过分析词语间数十亿级的关联规律，具备理解语义、生成文本和逻辑推理的能力。这类技术可应用于智能写作、在线客服、教育辅导等场景，显著提升信息处理效率。其核心突破始于2018年，现已成为当前人工智能发展的重要方向。</p>
+            </section>
+
+            <div class="button-container">
+                <button type="submit" class="btn" aria-label="继续下一页">
+                    继续
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- 页面专属逻辑 -->
+    <script type="module">
+        import { surveyManager, initProgress } from './js/survey.js';
+        import { showError } from './js/helpers.js';
+      
+        document.addEventListener('DOMContentLoaded', async () => {
+          try {
+            // 初始化进度条
+            initProgress(24);
+      
+            // 绑定表单提交
+            const form = document.getElementById('techSurvey');
+            
+            form.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              
+              try {
+                // 记录技术说明页停留时间
+                await surveyManager.recordPageTime('tech_intro');
+                
+                // 正常跳转
+                window.location.href = 'survey-part111.html';
+                
+              } catch (error) {
+                showError('页面跳转失败，请手动点击继续');
+                console.error('跳转错误:', error);
+              }
+            });
+      
+          } catch (error) {
+            showError('页面初始化失败，请刷新');
+            console.error('初始化错误:', error);
+          }
+        });
+      </script>
+</body>
+</html>
