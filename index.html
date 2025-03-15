@@ -8,17 +8,19 @@
     <!-- 预加载关键资源 -->
     <link rel="preload" href="css/styles.css" as="style">
     <link rel="preconnect" href="https://www.gstatic.com">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script type="module">
-        // 核心依赖
-        import { db } from './js/firebase-config.js';
+        // 增强核心依赖（增加auth）
+        import { db, auth } from './js/firebase-config.js';  // 修改点1：添加auth导入
         import { surveyManager, initProgress } from './js/survey.js';
+        import { signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  // 修改点2：添加认证方法
         
         // 初始化管理实例
         window.surveyManager = surveyManager;
+        window.auth = auth;  // 修改点3：暴露认证实例
     </script>
 </head>
 <body>
+    <!-- 保持原有DOM结构不变 -->
     <div class="container">
         <div class="header">
             <h1>人工智能信任调查问卷</h1>
@@ -33,7 +35,7 @@
                 <div class="content-text">
                     <p>您好！很荣幸能邀请您参加此问卷调查，请您仔细阅读题目并按照真实意愿填写。本调研属于学术研究，数据仅作整体概况分析使用，所有资料严格保密，敬请放心填答。完成调研将获得奖励。非常感谢您的支持与配合！</p>
                     <ul class="info-list">
-                        <li>问卷包含5个部分，约需要20-40分钟</li>
+                        <li>问卷包含4个部分，约需要2-5分钟</li>
                         <li>所有数据仅用于学术研究，严格保密</li>
                         <li>完成问卷后可领取现金奖励</li>
                     </ul>
@@ -49,25 +51,44 @@
         </div>
     </div>
 
-
+    <!-- 修改后的初始化逻辑 -->
     <script type="module">
+        import { auth } from './js/firebase-config.js';
         import { surveyManager, initProgress } from './js/survey.js';
         import { showError } from './js/helpers.js';
-      
+        import { signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
         document.addEventListener('DOMContentLoaded', async () => {
           try {
-            // 初始化进度条
-            initProgress(8);
-            
-            // 初始化数据收集
-            await surveyManager.init();
-            
+            // 新增认证流程（修改点4）
+            const initAuth = () => new Promise((resolve, reject) => {
+              const unsubscribe = auth.onAuthStateChanged(async user => {
+                unsubscribe();
+                if (user) return resolve(user);
+                try {
+                  const cred = await signInAnonymously(auth);
+                  resolve(cred.user);
+                } catch (error) {
+                  reject(error);
+                }
+              });
+            });
+
+            // 顺序初始化（修改点5）
+            await initAuth();  // 先完成认证
+            await surveyManager.init();  // 再初始化问卷系统
+            initProgress(8);  // 最后初始化进度条
+
+            // 增强点击跟踪（修改点6）
+            document.getElementById('startButton').addEventListener('click', async (e) => {
+              await surveyManager.recordAction('survey_start');
+            });
+
           } catch (error) {
             showError('系统初始化失败，请刷新页面');
             console.error('初始化错误:', error);
           }
         });
     </script>
-
 </body>
 </html>

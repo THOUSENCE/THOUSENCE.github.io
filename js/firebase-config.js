@@ -1,10 +1,16 @@
 // /public/js/firebase-config.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { 
-  getAuth, 
-  signInAnonymously 
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"; // 注意路径版本号
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  CACHE_SIZE_UNLIMITED
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC1wg94PeMQeKcmG9yEdauE0DTaZe4YiRI",
@@ -16,26 +22,39 @@ const firebaseConfig = {
   measurementId: "G-2466PL0TJC"
 };
 
-// 初始化顺序必须严格如下
+// 增强初始化配置
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app); // 必须在其他服务之前初始化
-const db = getFirestore(app);
 
-// 延迟执行认证（确保DOM加载完成）
-document.addEventListener('DOMContentLoaded', () => {
-  signInAnonymously(auth)
-    .catch((error) => {
-      console.error("匿名登录失败:", error.code, error.message);
-    });
+// 持久化配置
+const auth = getAuth(app);
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+    tabManager: 'none'
+  })
 });
 
-// 执行匿名登录
-signInAnonymously(auth)
-  .then(() => {
-    console.log("匿名登录成功");
-  })
-  .catch((error) => {
-    console.error("匿名登录失败:", error);
+// 认证状态管理
+let authReady = new Promise(resolve => {
+  const unsubscribe = onAuthStateChanged(auth, user => {
+    unsubscribe();
+    if (!user) {
+      signInAnonymously(auth)
+        .then(cred => resolve(cred.user))
+        .catch(error => {
+          console.error("Auth Error:", error);
+          resolve(null);
+        });
+    } else {
+      resolve(user);
+    }
   });
+});
 
-export { app, db, auth };
+// 全局访问点
+window.firebaseReady = {
+  auth: authReady,
+  db: Promise.resolve(db)
+};
+
+export { app, db, auth, authReady };

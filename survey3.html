@@ -5,18 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>问卷提交 - 人工智能信任调查</title>
   <link rel="stylesheet" href="css/styles.css">
-  <!-- 性能优化 -->
-  <link rel="preload" href="css/styles.css" as="style">
-  <link rel="preconnect" href="https://www.gstatic.com">
+  <!-- 认证依赖预加载 -->
+  <link rel="preload" href="js/firebase-config.js" as="script">
   <script type="module">
-    // 核心依赖
-    import { db } from './js/firebase-config.js';
+    // 增强依赖导入
+    import { auth } from './js/firebase-config.js';
     import { surveyManager, initProgress } from './js/survey.js';
-    
-    // 初始化管理实例
     window.surveyManager = surveyManager;
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -57,67 +53,87 @@
     </main>
   </div>
 
-  <!-- 页面专属逻辑 -->
+  <!-- 修改后的逻辑 -->
   <script type="module">
+    import { auth } from './js/firebase-config.js';
     import { surveyManager, initProgress } from './js/survey.js';
     import { showProgress, showError } from './js/helpers.js';
-  
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 最终页配置
+    const FINAL_CONFIG = {
+      progress: 100,
+      successPath: 'thanks.html',
+      failPath: 'disqualified.html',
+      timeout: 3000 // 成功提示显示时长
+    };
+
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        // 初始化最终页进度
-        initProgress(100);
-  
-        // 执行初始化（例如：获取IP等）
-        await surveyManager.init();
-  
-        // 绑定最终提交表单
-        const form = document.getElementById('finalSubmit');
-        const errorContainer = document.getElementById('errorContainer');
-  
-        form.addEventListener('submit', async (e) => {
+        // 认证验证
+        const checkAuth = () => {
+          if (!auth.currentUser?.uid) {
+            throw new Error('无效用户会话');
+          }
+          return auth.currentUser.uid;
+        };
+
+        // 初始化流程
+        const userId = checkAuth();
+        await surveyManager.verifyCompletion(); // 新增完成验证
+        initProgress(FINAL_CONFIG.progress);
+
+        // 绑定最终提交
+        document.getElementById('finalSubmit').addEventListener('submit', async (e) => {
           e.preventDefault();
-  
+          const progress = showProgress('正在提交最终数据...', 'info');
+
           try {
-            const progress = showProgress('正在提交最终数据...', 'info');
-  
+            // 记录最终确认
+            await setDoc(doc(db, 'userJourney', userId), {
+              final_submission: {
+                timestamp: new Date(),
+                consent: e.target.consent.checked,
+                userAgent: navigator.userAgent,
+                ip: await surveyManager.getClientIP()
+              }
+            }, { merge: true });
+
             // 执行最终提交
             const result = await surveyManager.submitFinal();
-  
             progress.close();
 
+            // 处理提交结果
             if (result.success) {
-              progress.update('提交成功！正在跳转...');
+              showProgress('提交成功！正在跳转...', 'success');
               setTimeout(() => {
-                progress.close();
-                window.location.href = 'thanks.html';
-              }, 1500);
+                window.location.href = FINAL_CONFIG.successPath;
+              }, FINAL_CONFIG.timeout);
             } else {
+              const errorMsg = result.reasons?.join('，') || result.error;
+              showError(`提交失败：${errorMsg}`);
+              errorContainer.innerHTML = `<p class="error-message">${errorMsg}</p>`;
+              errorContainer.style.display = 'block';
+              
               if (result.valid === false) {
-                // 显示具体的错误信息
-                errorContainer.innerHTML = `<p class="error-message">提交失败：${result.reasons.join('，')}</p>`;
-                errorContainer.style.display = 'block';
-                const reasons = result.reasons.join("，");
-                showError(`未通过验证: ${reasons}`);
-                progress.close();
-
                 setTimeout(() => {
-                window.location.href = 'disqualified.html';
-                }, 2000);
-              } else {
-                // 其他错误情况
-                showError(`最终提交失败: ${result.error ? result.error : '未知错误'}`);
+                  window.location.href = FINAL_CONFIG.failPath;
+                }, FINAL_CONFIG.timeout);
               }
             }
-  
+
           } catch (error) {
-            showError('提交过程中发生意外错误');
+            showError(`系统错误：${error.message}`);
             console.error('最终提交异常:', error);
+          } finally {
+            progress.close();
           }
         });
-  
+
       } catch (error) {
-        showError('页面初始化失败，请刷新重试');
+        showError(`页面加载失败：${error.message}`);
         console.error('最终页错误:', error);
+        setTimeout(() => window.location.href = 'index.html', 5000);
       }
     });
   </script>

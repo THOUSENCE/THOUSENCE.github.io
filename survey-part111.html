@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人工智能信任评估 - 第三部分</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- 性能优化 -->
-    <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preconnect" href="https://www.gstatic.com">
+    <!-- 增强预加载 -->
+    <link rel="preload" href="js/firebase-config.js" as="script">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <script type="module">
-        // 核心依赖
-        import { db } from './js/firebase-config.js';
+        // 增强依赖导入
+        import { auth } from './js/firebase-config.js';  // 新增认证模块
         import { surveyManager, initProgress } from './js/survey.js';
-        
-        // 初始化管理实例
-        window.surveyManager = surveyManager;
     </script>
 </head>
 <body>
@@ -219,41 +216,72 @@
         </form>
     </div>
 
+    <!-- 修改后的逻辑 -->
     <script type="module">
+        import { auth } from './js/firebase-config.js';
         import { surveyManager, initProgress } from './js/survey.js';
         import { showError } from './js/helpers.js';
-      
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 页面配置参数
+        const PAGE_CONFIG = {
+            progress: 32,
+            pageType: 'scenario_A',  // 根据版本区分场景
+            nextPage: 'survey-part110.html'
+        };
+
         document.addEventListener('DOMContentLoaded', async () => {
           try {
-            // 初始化进度条
-            initProgress(32);
-      
+            // 认证验证
+            const checkAuth = () => {
+              if (!auth.currentUser?.uid) {
+                throw new Error('无效用户会话');
+              }
+              return auth.currentUser.uid;
+            };
+
+            // 初始化流程
+            await surveyManager.verifyAllocation();  // 新增分配验证
+            initProgress(PAGE_CONFIG.progress);
+
             // 绑定表单提交
-            const form = document.getElementById('evalForm');
-            
-            form.addEventListener('submit', async (e) => {
+            document.getElementById('evalForm').addEventListener('submit', async (e) => {
               e.preventDefault();
               
               try {
-                // 保存情境评估数据
-                const formData = new FormData(e.target);
-                await surveyManager.saveFormData('scenario1_eval', formData);
-                await surveyManager.recordPageTime('scenario1_eval');
-      
-                // 跳转到下一环节
-                window.location.href = 'survey-part110.html';
-                
+                const userId = checkAuth();
+                const formData = Object.fromEntries(new FormData(e.target));
+
+                // 增强数据存储
+                await Promise.all([
+                  surveyManager.saveFormData(PAGE_CONFIG.pageType, formData),
+                  setDoc(doc(db, 'userJourney', userId), {
+                    [PAGE_CONFIG.pageType]: {
+                      completed: new Date(),
+                      responses: formData
+                    }
+                  }, { merge: true }),
+                  surveyManager.recordAction('scenario_submit')
+                ]);
+
+                // 统一导航控制
+                await surveyManager.navigateNext({
+                  condition: true,  // 强制继续
+                  exitPath: 'index.html',
+                  continuePath: PAGE_CONFIG.nextPage
+                });
+
               } catch (error) {
-                showError('数据保存失败，请检查网络连接');
-                console.error('提交错误:', error);
+                showError(`提交失败：${error.message}`);
+                console.error('场景提交错误:', error);
               }
             });
-      
+
           } catch (error) {
-            showError('页面加载异常，请刷新重试');
+            showError('问卷加载失败，请重新进入');
             console.error('初始化错误:', error);
           }
         });
-      </script>
+    </script>
 </body>
 </html>

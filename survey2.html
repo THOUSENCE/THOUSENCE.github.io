@@ -9,12 +9,12 @@
     <link rel="preload" href="css/styles.css" as="style">
     <link rel="preconnect" href="https://www.gstatic.com">
     <script type="module">
-        // 核心依赖
-        import { db } from './js/firebase-config.js';
+        import { db, auth } from './js/firebase-config.js';
         import { surveyManager, initProgress } from './js/survey.js';
         
         // 初始化管理实例
         window.surveyManager = surveyManager;
+        window.auth = auth;
     </script>
 </head>
 <body>
@@ -27,25 +27,12 @@
             </div>
         </div>
 
-        <form id="techSurvey" class="questionnaire-part" 
-              aria-label="技术说明部分">
+        <form id="techSurvey" class="questionnaire-part" aria-label="技术说明部分">
             <!-- 技术说明卡片（保持原内容） -->
             <section class="info-card ai-intro" aria-labelledby="ai-title">
                 <div class="icon-box" aria-hidden="true">🤖</div>
                 <h2 id="ai-title">人工智能（AI）</h2>
                 <p>人工智能是指计算机系统通过分析环境数据，模拟人类思维进行自主决策的技术。它借助各类传感器获取信息，运用智能算法识别规律，最终输出最优行动方案。这项技术正在推动医疗诊断、城市管理、工业制造等领域的智能化升级。</p>
-            </section>
-
-            <section class="info-card driving-intro" aria-labelledby="drive-title">
-                <div class="icon-box" aria-hidden="true">🚗</div>
-                <h2 id="drive-title">智能驾驶</h2>
-                <p>智能驾驶系统是能够自主感知路况并完成导航的车辆控制技术。通过雷达、摄像头、卫星定位等设备收集环境数据，结合实时地图和交通规则分析，车辆可自动完成加速、转向、制动等操作。该系统不仅能实现不同级别的自动驾驶功能（从辅助驾驶到完全无人驾驶），还能通过车辆间的协同通信提升道路通行效率，减少交通事故。</p>
-            </section>
-
-            <section class="info-card llm-intro" aria-labelledby="llm-title">
-                <div class="icon-box" aria-hidden="true">💬</div>
-                <h2 id="llm-title">大语言模型</h2>
-                <p>大语言模型是基于海量文本数据训练的人工智能程序（如ChatGPT），通过分析词语间数十亿级的关联规律，具备理解语义、生成文本和逻辑推理的能力。这类技术可应用于智能写作、在线客服、教育辅导等场景，显著提升信息处理效率。其核心突破始于2018年，现已成为当前人工智能发展的重要方向。</p>
             </section>
 
             <div class="button-container">
@@ -55,40 +42,109 @@
             </div>
         </form>
     </div>
-    <!-- 页面专属逻辑 -->
+
     <script type="module">
+        import { db, auth } from './js/firebase-config.js';
         import { surveyManager, initProgress } from './js/survey.js';
         import { showError } from './js/helpers.js';
-      
+        import { doc, runTransaction, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // 版本白名单（新增校验）
+        const VALID_PAGES = [
+            'part111', 'part112', 'part113', 'part114',
+            'part115', 'part116', 'part117', 'part118'
+        ];
+
         document.addEventListener('DOMContentLoaded', async () => {
           try {
-            // 初始化进度条
+            // 增强认证流程
+            const initAuth = () => new Promise((resolve, reject) => {
+              const unsubscribe = onAuthStateChanged(auth, async user => {
+                unsubscribe();
+                if (user) return resolve(user);
+                try {
+                  await signInAnonymously(auth);
+                  resolve(auth.currentUser);
+                } catch (error) {
+                  reject(error);
+                }
+              });
+            });
+
+            // 初始化流程
+            await initAuth();
             initProgress(24);
-      
+
             // 绑定表单提交
-            const form = document.getElementById('techSurvey');
-            
-            form.addEventListener('submit', async (e) => {
+            document.getElementById('techSurvey').addEventListener('submit', async (e) => {
               e.preventDefault();
               
               try {
-                // 记录技术说明页停留时间
-                await surveyManager.recordPageTime('tech_intro');
-                
-                // 正常跳转
-                window.location.href = 'survey-part111.html';
-                
+                // 验证用户状态
+                const user = auth.currentUser;
+                if (!user || user.isAnonymous === false) {
+                  throw new Error('无效用户会话');
+                }
+
+                // 记录交互数据
+                await Promise.all([
+                  surveyManager.recordPageTime('tech_intro'),
+                  surveyManager.recordAction('tech_page_submit')
+                ]);
+
+                // 执行分配事务
+                const allocationRef = doc(db, 'surveyAllocations', 'pageCounts');
+                let targetPage;
+
+                await runTransaction(db, async (transaction) => {
+                  const docSnap = await transaction.get(allocationRef);
+                  if (!docSnap.exists()) throw new Error('分配配置未初始化');
+
+                  const allocations = docSnap.data();
+                  const availablePages = VALID_PAGES.filter(p => allocations[p] < 30);
+
+                  if (availablePages.length === 0) {
+                    throw new Error('所有问卷版本已满员，请稍后再试');
+                  }
+
+                  // 加权随机分配（优化点）
+                  targetPage = availablePages.sort(() => 0.5 - Math.random())[0];
+                  transaction.update(allocationRef, {
+                    [targetPage]: allocations[targetPage] + 1
+                  });
+                });
+
+                // 验证页面有效性（新增校验）
+                if (!VALID_PAGES.includes(targetPage)) {
+                  throw new Error(`无效问卷版本：${targetPage}`);
+                }
+
+                // 记录用户路径
+                await setDoc(doc(db, 'userAllocations', user.uid), {
+                  uid: user.uid,
+                  page: targetPage,
+                  timestamp: new Date(),
+                  userAgent: navigator.userAgent
+                }, { merge: true });
+
+                // 执行跳转
+                window.location.href = `survey-${targetPage}.html`;
+
               } catch (error) {
-                showError('页面跳转失败，请手动点击继续');
-                console.error('跳转错误:', error);
+                const errorMessage = error.message.includes('满员') ? 
+                  '当前参与人数已满，请24小时后再次访问' : 
+                  `系统错误（${error.message}）`;
+                showError(errorMessage);
+                console.error('分配错误:', error);
               }
             });
-      
+
           } catch (error) {
-            showError('页面初始化失败，请刷新');
+            showError('页面初始化失败，请清除缓存后重试');
             console.error('初始化错误:', error);
           }
         });
-      </script>
+    </script>
 </body>
 </html>
