@@ -3,52 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人工智能信任调查问卷 - 第一部分</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- 认证依赖预加载 -->
-    <link rel="preload" href="js/firebase-config.js" as="script">
-    <script type="module">
-        // 增强依赖导入
-        import { auth } from './js/firebase-config.js';  // 修改点1：添加认证模块
-        import { surveyManager, initProgress } from './js/survey.js';
-        import { showError } from './js/helpers.js';
-    </script>
+    <title>第一部分 - AI信任研究问卷</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- 保持原有DOM结构不变 -->
     <div class="container">
-        <div class="header">
-            <h1>人工智能信任调查问卷</h1>
-            <div class="progress-bar" role="progressbar" 
-                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="16">
-                <div class="progress"></div>
+        <header>
+            <h1>基本信息调查（第一部分）</h1>
+            <div class="progress-bar">
+                <div class="progress" style="width: 33%"></div>
             </div>
-        </div>
+        </header>
 
-        <form id="surveyForm" class="questionnaire-part" 
-              aria-label="问卷第一部分">
-            <!-- 保持原有问题结构不变 -->
-            <div class="question-group">
-                <h3>1. 您的性别</h3>
-                <div class="radio-group" role="radiogroup" aria-required="true">
+        <form id="surveyForm">
+            <!-- 问题1：性别 -->
+            <div class="question-box">
+                <h3>1. 性别<span class="required">*</span></h3>
+                <div class="options">
                     <label><input type="radio" name="gender" value="male" required> 男</label>
                     <label><input type="radio" name="gender" value="female"> 女</label>
                 </div>
             </div>
 
-            <div class="question-group">
-                <h3>2. 您的年龄段</h3>
-                <div class="radio-group column">
+            <!-- 问题2：年龄段 -->
+            <div class="question-box">
+                <h3>2. 年龄段<span class="required">*</span></h3>
+                <div class="options vertical">
                     <label><input type="radio" name="age" value="under18" required> 18岁以下</label>
                     <label><input type="radio" name="age" value="18-30"> 18-30岁</label>
                     <label><input type="radio" name="age" value="30-45"> 30-45岁</label>
                     <label><input type="radio" name="age" value="over45"> 45岁以上</label>
                 </div>
             </div>
-    
-            <div class="question-group">
-                <h3>3. 您的最高学历</h3>
-                <div class="radio-group column">
+
+            <!-- 问题3：最高学历 -->
+            <div class="question-box">
+                <h3>3. 最高学历<span class="required">*</span></h3>
+                <div class="options vertical">
                     <label><input type="radio" name="education" value="junior" required> 初中及以下</label>
                     <label><input type="radio" name="education" value="highschool"> 普高/中专/技校/职高</label>
                     <label><input type="radio" name="education" value="college"> 专科</label>
@@ -57,27 +48,30 @@
                     <label><input type="radio" name="education" value="doctor"> 博士</label>
                 </div>
             </div>
-    
-            <div class="question-group">
-                <h3>4. 您是否使用过人工智能技术/服务？</h3>
-                <div class="radio-group">
+
+            <!-- 问题4：AI使用经历 -->
+            <div class="question-box">
+                <h3>4. 是否使用过人工智能技术/服务？<span class="required">*</span></h3>
+                <div class="options">
                     <label><input type="radio" name="ai_usage" value="yes" required> 是</label>
                     <label><input type="radio" name="ai_usage" value="no"> 否</label>
                 </div>
             </div>
-    
-            <div class="question-group">
-                <h3>5. 您的职业是否与AI相关？</h3>
-                <div class="radio-group">
-                    <label><input type="radio" name="ai_related" value="yes" required> 是</label>
-                    <label><input type="radio" name="ai_related" value="no"> 否</label>
+
+            <!-- 问题5：AI相关职业 -->
+            <div class="question-box">
+                <h3>5. 职业是否与AI相关？<span class="required">*</span></h3>
+                <div class="options">
+                    <label><input type="radio" name="ai_career" value="yes" required> 是</label>
+                    <label><input type="radio" name="ai_career" value="no"> 否</label>
                 </div>
             </div>
-    
-            <div class="question-group">
-                <h3>6. 您的人工智能使用频次</h3>
-                <div class="radio-group column">
-                    <label><input type="radio" name="frequency" value="none" required> 更低</label>
+
+            <!-- 问题6：使用频次 -->
+            <div class="question-box">
+                <h3>6. 人工智能技术/服务使用频次<span class="required">*</span></h3>
+                <div class="options vertical">
+                    <label><input type="radio" name="frequency" value="none" required> 无</label>
                     <label><input type="radio" name="frequency" value="monthly"> 每月1-2次</label>
                     <label><input type="radio" name="frequency" value="weekly1"> 每周1-2次</label>
                     <label><input type="radio" name="frequency" value="weekly3"> 每周3-4次</label>
@@ -85,154 +79,36 @@
                 </div>
             </div>
 
-
-            <!-- 其他问题组保持原样 -->
-
-            <div class="button-container">
-                <button type="submit" class="btn" aria-label="提交并继续">
-                    继续
-                </button>
+            <div class="nav-buttons">
+                <button type="button" class="prev-button" onclick="history.back()">上一页</button>
+                <button type="submit" class="continue-button">继续</button>
             </div>
         </form>
-
-        <div id="exitMessage" class="content-box" 
-             role="alert" aria-hidden="true" hidden>
-            <h2>感谢参与！</h2>
-            <p>根据您的选择，本次问卷到此结束。感谢您的时间与支持！</p>
-            <div class="button-container">
-                <a href="index.html" class="btn">返回首页</a>
-            </div>
-        </div>
     </div>
-
-    <!-- 修改后的逻辑 -->
     <script type="module">
-        import { auth } from './js/firebase-config.js';
-        import { surveyManager, initProgress } from './js/survey.js';
-        import { showError } from './js/helpers.js';
-        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        document.addEventListener('DOMContentLoaded', async () => {
-          try {
-            // 新增认证验证（修改点2）
-            const checkAuth = () => {
-              if (!auth.currentUser) {
-                throw new Error('用户身份未验证');
-              }
-              return auth.currentUser.uid;
-            };
-
-            // 初始化流程优化
-            await surveyManager.initializeSession();  // 修改点3：统一初始化
-            initProgress(16);
-
-            const form = document.getElementById('surveyForm');
-            
-            form.addEventListener('submit', async (e) => {
-              e.preventDefault();
-              
-              try {
-                const userId = checkAuth();  // 强制身份验证
-                const formData = Object.fromEntries(new FormData(form));
-
-                // 增强数据存储（修改点4）
-                await Promise.all([
-                  surveyManager.saveFormData('part1', formData),
-                  setDoc(doc(db, 'userJourney', userId), {
-                    part1_completed: new Date(),
-                    ...formData
-                  })
-                ]);
-
-                // 统一跳转控制（修改点5）
-                const shouldContinue = formData.ai_usage === 'yes';
-                await surveyManager.navigateNext({
-                  condition: shouldContinue,
-                  exitPath: 'index.html',
-                  continuePath: 'survey2.html'
-                });
-
-              } catch (error) {
-                showError(`提交失败：${error.message}`);
-                console.error('提交错误:', error);
-              }
-            });
-
-          } catch (error) {
-            showError('页面加载失败，请检查网络');
-            console.error('初始化错误:', error);
+        import { initSurvey, handleSubmit } from './js/survey.js';
+        
+        // 初始化问卷
+        initSurvey({
+          pageNumber: 1,
+          totalPages: 2
+        });
+      
+        // 绑定提交事件
+        document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          // 验证必填项
+          if(!e.target.checkValidity()) {
+            alert('请完成所有必填问题');
+            return;
           }
+      
+          // 保存数据并跳转
+          await handleSubmit();
+          window.location.href = 'survey2.html';
         });
     </script>
-</body>
-</html>
 
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人工智能信任调查问卷 - 第一部分</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- 性能优化 -->
-    <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preconnect" href="https://www.gstatic.com">
-    <script type="module">
-        import { surveyManager, initProgress } from './js/survey.js';
-    </script>
-</head>
-<body>
-    <div class="container">
-
-    </div>
-
-    <script type="module">
-        import { surveyManager, initProgress } from './js/survey.js';
-        import { showError } from './js/helpers.js';
-      
-        document.addEventListener('DOMContentLoaded', async () => {
-          try {
-            // 初始化进度条
-            initProgress(16);
-      
-            // 绑定表单提交
-            const form = document.getElementById('surveyForm');
-            
-            form.addEventListener('submit', async (e) => {
-              e.preventDefault();
-              
-              try {
-                // 保存表单数据
-                const formData = new FormData(form);
-                await surveyManager.saveFormData('part1', formData);  // 添加await
-                await surveyManager.recordPageTime('part1');         // 添加await
-      
-                // 验证逻辑
-                const aiUsage = form.elements.ai_usage.value;
-                if (aiUsage === 'no') {
-                  form.hidden = true;
-                  document.getElementById('exitMessage').hidden = false;
-                  
-                  // 提交数据并跳转
-                  const success = await surveyManager.submitFinal();
-                  if(success) window.location.href = 'index.html';
-                  
-                } else {
-                  window.location.href = 'survey2.html';
-                }
-                
-              } catch (error) {
-                showError('提交过程中发生错误，请重试');
-                console.error('提交错误:', error);
-              }
-            });
-      
-          } catch (error) {
-            showError('页面初始化失败，请刷新');
-            console.error('初始化错误:', error);
-          }
-        });
-    </script>
 </body>
 </html>

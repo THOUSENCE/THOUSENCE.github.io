@@ -3,105 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>感谢参与 - 您的反馈很重要</title>
-    <!-- Font Awesome 图标库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 2rem;
-        }
-
-        .container {
-            text-align: center;
-            background: white;
-            padding: 3rem 4rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .checkmark {
-            font-size: 5rem;
-            color: #28a745;
-            margin-bottom: 1.5rem;
-            animation: float 2s ease-in-out infinite;
-        }
-
-        h1 {
-            color: #212529;
-            font-size: 2.5rem;
-            margin-bottom: 1.2rem;
-            font-weight: 600;
-        }
-
-        p {
-            color: #495057;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: #28a745;
-            color: white !important;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .back-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            p {
-                font-size: 1rem;
-            }
-        }
-    </style>
+    <title>提交成功 - AI信任研究问卷</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <i class="checkmark fas fa-check-circle"></i>
-        <h1>感谢您的参与！</h1>
-        <p>您的问卷对我们非常重要。</p>
+        <header>
+            <h1>问卷提交成功！</h1>
+        </header>
+
+        <main>
+            <div class="success-box">
+                <div class="success-icon">✓</div>
+                <h2 class="success-title">感谢您的参与！</h2>
+                <div class="back-home">
+                    <p>5秒后自动跳转至首页</p>
+                    <a href="index.html" class="home-button">立即返回首页</a>
+                </div>
+            </div>
+        </main>
     </div>
+
+    <script>
+        // 5秒后自动跳转
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 5000);
+    </script>
 </body>
 </html>

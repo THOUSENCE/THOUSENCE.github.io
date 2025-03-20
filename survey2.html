@@ -3,147 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人工智能信任调查问卷 - 第二部分</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- 性能优化 -->
-    <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preconnect" href="https://www.gstatic.com">
-    <script type="module">
-        import { db, auth } from './js/firebase-config.js';
-        import { surveyManager, initProgress } from './js/survey.js';
-        
-        // 初始化管理实例
-        window.surveyManager = surveyManager;
-        window.auth = auth;
-    </script>
+    <title>第二部分 - AI信任研究问卷</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>人工智能技术说明</h1>
-            <div class="progress-bar" role="progressbar" 
-                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="24">
-                <div class="progress"></div>
+        <header>
+            <h1>信任评估调查（第二部分）</h1>
+            <div class="progress-bar">
+                <div class="progress" style="width: 66%"></div>
             </div>
-        </div>
+        </header>
 
-        <form id="techSurvey" class="questionnaire-part" aria-label="技术说明部分">
-            <!-- 技术说明卡片（保持原内容） -->
-            <section class="info-card ai-intro" aria-labelledby="ai-title">
-                <div class="icon-box" aria-hidden="true">🤖</div>
-                <h2 id="ai-title">人工智能（AI）</h2>
-                <p>人工智能是指计算机系统通过分析环境数据，模拟人类思维进行自主决策的技术。它借助各类传感器获取信息，运用智能算法识别规律，最终输出最优行动方案。这项技术正在推动医疗诊断、城市管理、工业制造等领域的智能化升级。</p>
+        <video controls class="demo-video" 
+            aria-describedby="video-caption">
+            <source src="video/video.mp4" type="video/mp4">
+            您的浏览器不支持Video标签。
+        </video>
+
+        <!-- 新增图文内容区块 -->
+        <section class="scenario-section">
+            <div class="media-container">
+                <img src="image/1.png" alt="P1" class="scenario-image">
+            </div>
+            <div class="content-container">
+                <h3 class="scenario-title">情景</h3>
+                <div class="scenario-text">
+                    <p>假设您家中有一台这样的机器人，专门用于照顾老人。老人身体健康，只是行动不便，需要依赖轮椅出行。</p>
+                    <p>机器人每天都会推着老人外出散步。在使用了一段时间后，您发现这款机器人每次都能精准识别路面的坑洼处，并选择绕行。</p>
+                    <p>此外，您可以通过相关APP随时查看机器人记录的老人的出行数据，这些数据以路线图的形式清晰呈现。</p>
+                </div>
+            </div>
+        </section>
+
+        <form id="surveyForm">
+            <!-- 感知风险 -->
+            <section class="question-section">
+                <h2>一、感知风险</h2>
+                
+                <div class="question-box">
+                    <h3>1. 我担心使用该人工智能技术会泄露我的隐私，会对我造成负面的影响。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk1" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk1" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk1" value="3"> 中立</label>
+                        <label><input type="radio" name="risk1" value="4"> 同意</label>
+                        <label><input type="radio" name="risk1" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-box">
+                    <h3>2. 我担心在使用该人工智能技术过程中操作失误会导致财产损失。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk2" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk2" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk2" value="3"> 中立</label>
+                        <label><input type="radio" name="risk2" value="4"> 同意</label>
+                        <label><input type="radio" name="risk2" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-box">
+                    <h3>3. 我担心技术供应商过多收集我的信息，用做其他目的。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk3" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk3" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk3" value="3"> 中立</label>
+                        <label><input type="radio" name="risk3" value="4"> 同意</label>
+                        <label><input type="radio" name="risk3" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-box">
+                    <h3>4. 我担心该人工智能技术会威胁我的人身安全，如医疗事故。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk4" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk4" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk4" value="3"> 中立</label>
+                        <label><input type="radio" name="risk4" value="4"> 同意</label>
+                        <label><input type="radio" name="risk4" value="5"> 非常同意</label>
+                    </div>
+                </div>
             </section>
 
-            <div class="button-container">
-                <button type="submit" class="btn" aria-label="继续下一页">
-                    继续
-                </button>
+            <!-- 功能性信任 -->
+            <section class="question-section">
+                <h2>二、功能性信任(FT)</h2>
+                <div class="question-box">
+                    <h3>5. 我相信该人工智能能够为我提供服务。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk5" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk5" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk5" value="3"> 中立</label>
+                        <label><input type="radio" name="risk5" value="4"> 同意</label>
+                        <label><input type="radio" name="risk5" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3> 6.	我相信该人工智能具备为我提供服务所需的功能。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk6" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk6" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk6" value="3"> 中立</label>
+                        <label><input type="radio" name="risk6" value="4"> 同意</label>
+                        <label><input type="radio" name="risk6" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>7.	我相信该人工智能总体来说能够为我提供我想要的服务。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk7" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk7" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk7" value="3"> 中立</label>
+                        <label><input type="radio" name="risk7" value="4"> 同意</label>
+                        <label><input type="radio" name="risk7" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 帮助性信任 -->
+            <section class="question-section">
+                <h2>三、帮助性信任(HF)</h2>
+                <div class="question-box">
+                    <h3>8. 我相信该人工智能能够通过它的功能满足我的求助需求。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk8" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk8" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk8" value="3"> 中立</label>
+                        <label><input type="radio" name="risk8" value="4"> 同意</label>
+                        <label><input type="radio" name="risk8" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>9.	我相信该人工智能能够供我需要的帮助。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk9" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk9" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk9" value="3"> 中立</label>
+                        <label><input type="radio" name="risk9" value="4"> 同意</label>
+                        <label><input type="radio" name="risk9" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>10.	我相信该人工智能在服务过程中能够根据需要提供有效的指导。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk10" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk10" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk10" value="3"> 中立</label>
+                        <label><input type="radio" name="risk10" value="4"> 同意</label>
+                        <label><input type="radio" name="risk10" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 可靠性信任 -->
+            <section class="question-section">
+                <h2>四、可靠性信任(RB)</h2>
+                
+                <div class="question-box">
+                    <h3>11. 我相信该人工智能是个非常可靠的人工智能。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk11" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk11" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk11" value="3"> 中立</label>
+                        <label><input type="radio" name="risk11" value="4"> 同意</label>
+                        <label><input type="radio" name="risk11" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>12.	我相信该人工智能不会让我失望。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk12" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk12" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk12" value="3"> 中立</label>
+                        <label><input type="radio" name="risk12" value="4"> 同意</label>
+                        <label><input type="radio" name="risk12" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>13.	我相信该人工智能非常值得信赖。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk13" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk13" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk13" value="3"> 中立</label>
+                        <label><input type="radio" name="risk13" value="4"> 同意</label>
+                        <label><input type="radio" name="risk13" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>14.	我相信该人工智能不会在我这里出现故障。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk14" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk14" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk14" value="3"> 中立</label>
+                        <label><input type="radio" name="risk14" value="4"> 同意</label>
+                        <label><input type="radio" name="risk14" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+            <div class="nav-buttons">
+                <button type="button" class="prev-button" onclick="window.location.href='survey1.html'">上一页</button>
+                <button type="submit" class="submit-button">提交问卷</button>
             </div>
         </form>
     </div>
 
+    <!-- Firebase 和业务逻辑 -->
     <script type="module">
-        import { db, auth } from './js/firebase-config.js';
-        import { surveyManager, initProgress } from './js/survey.js';
-        import { showError } from './js/helpers.js';
-        import { doc, runTransaction, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        // 从survey.js导入共用逻辑
+        import { initSurvey, handleSubmit } from './js/survey.js';
+        
+        // 初始化页面逻辑
+        initSurvey({
+            pageNumber: 2,
+            totalPages: 2
+        });
 
-        // 版本白名单（新增校验）
-        const VALID_PAGES = [
-            'part111', 'part112', 'part113', 'part114',
-            'part115', 'part116', 'part117', 'part118'
-        ];
-
-        document.addEventListener('DOMContentLoaded', async () => {
-          try {
-            // 增强认证流程
-            const initAuth = () => new Promise((resolve, reject) => {
-              const unsubscribe = onAuthStateChanged(auth, async user => {
-                unsubscribe();
-                if (user) return resolve(user);
-                try {
-                  await signInAnonymously(auth);
-                  resolve(auth.currentUser);
-                } catch (error) {
-                  reject(error);
-                }
-              });
-            });
-
-            // 初始化流程
-            await initAuth();
-            initProgress(24);
-
-            // 绑定表单提交
-            document.getElementById('techSurvey').addEventListener('submit', async (e) => {
-              e.preventDefault();
-              
-              try {
-                // 验证用户状态
-                const user = auth.currentUser;
-                if (!user || user.isAnonymous === false) {
-                  throw new Error('无效用户会话');
-                }
-
-                // 记录交互数据
-                await Promise.all([
-                  surveyManager.recordPageTime('tech_intro'),
-                  surveyManager.recordAction('tech_page_submit')
-                ]);
-
-                // 执行分配事务
-                const allocationRef = doc(db, 'surveyAllocations', 'pageCounts');
-                let targetPage;
-
-                await runTransaction(db, async (transaction) => {
-                  const docSnap = await transaction.get(allocationRef);
-                  if (!docSnap.exists()) throw new Error('分配配置未初始化');
-
-                  const allocations = docSnap.data();
-                  const availablePages = VALID_PAGES.filter(p => allocations[p] < 30);
-
-                  if (availablePages.length === 0) {
-                    throw new Error('所有问卷版本已满员，请稍后再试');
-                  }
-
-                  // 加权随机分配（优化点）
-                  targetPage = availablePages.sort(() => 0.5 - Math.random())[0];
-                  transaction.update(allocationRef, {
-                    [targetPage]: allocations[targetPage] + 1
-                  });
-                });
-
-                // 验证页面有效性（新增校验）
-                if (!VALID_PAGES.includes(targetPage)) {
-                  throw new Error(`无效问卷版本：${targetPage}`);
-                }
-
-                // 记录用户路径
-                await setDoc(doc(db, 'userAllocations', user.uid), {
-                  uid: user.uid,
-                  page: targetPage,
-                  timestamp: new Date(),
-                  userAgent: navigator.userAgent
-                }, { merge: true });
-
-                // 执行跳转
-                window.location.href = `survey-${targetPage}.html`;
-
-              } catch (error) {
-                const errorMessage = error.message.includes('满员') ? 
-                  '当前参与人数已满，请24小时后再次访问' : 
-                  `系统错误（${error.message}）`;
-                showError(errorMessage);
-                console.error('分配错误:', error);
-              }
-            });
-
-          } catch (error) {
-            showError('页面初始化失败，请清除缓存后重试');
-            console.error('初始化错误:', error);
-          }
+        // 表单提交处理
+        document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleSubmit();
+            window.location.href = 'thanks.html';
         });
     </script>
 </body>

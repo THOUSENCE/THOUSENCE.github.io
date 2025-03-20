@@ -1,0 +1,262 @@
+/* 基础样式 */
+body {
+  font-family: '微软雅黑', sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 头部视频样式 */
+header {
+  position: relative;
+}
+
+.demo-video {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  border: 3px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background: #000;
+}
+
+/* 进度条 */
+.progress-bar {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: #2196f3;
+  transition: width 0.3s ease;
+}
+
+/* 问卷内容 */
+.welcome-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.question-box {
+  background: #fff;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.question-box h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 16px;
+}
+
+/* 选项布局 */
+.options {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.options.vertical {
+  flex-direction: column;
+  gap: 12px;
+}
+
+.options.scale {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  transition: background 0.2s;
+}
+
+.options.scale label {
+  flex-direction: column;
+  text-align: center;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+/* 按钮样式 */
+.start-button, 
+.continue-button, 
+.submit-button {
+  display: inline-block;
+  background: #2196f3;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.start-button:hover,
+.continue-button:hover {
+  background: #1976d2;
+}
+
+.submit-button {
+  background: #4caf50;
+}
+
+.submit-button:hover {
+  background: #45a049;
+}
+
+.prev-button {
+  background: #eee;
+  color: #666;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 成功页面 */
+.success-box {
+  text-align: center;
+  padding: 40px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  margin: 30px 0;
+}
+
+.success-icon {
+  font-size: 80px;
+  color: #4CAF50;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+/* 页脚 */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #666;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .container {
+      padding: 15px;
+  }
+
+  .demo-video {
+      margin: 10px 0;
+  }
+
+  .options.scale {
+      grid-template-columns: 1fr;
+  }
+
+  .nav-buttons {
+      flex-direction: column;
+      gap: 10px;
+  }
+}
+
+/* 辅助样式 */
+.required {
+  color: #f44336;
+  margin-left: 3px;
+}
+
+.highlight-info {
+  background: #e3f2fd;
+  padding: 15px;
+  border-left: 4px solid #2196f3;
+  margin: 20px 0;
+}
+/* 情景说明区块样式 */
+.scenario-section {
+  display: flex;
+  gap: 30px;
+  margin: 40px 0;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.media-container {
+  flex: 0 0 45%;
+  min-width: 300px;
+}
+
+.scenario-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.content-container {
+  flex: 1;
+  padding: 15px;
+}
+
+.scenario-title {
+  color: #2c3e50;
+  font-size: 1.5em;
+  margin-bottom: 1.2em;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5em;
+}
+
+.scenario-text p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #34495e;
+  margin-bottom: 1.2em;
+  text-align: justify;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .scenario-section {
+      flex-direction: column;
+      gap: 20px;
+  }
+  
+  .media-container {
+      flex: none;
+      text-align: center;
+  }
+  
+  .scenario-image {
+      max-width: 80%;
+  }
+}
