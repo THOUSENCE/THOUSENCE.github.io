@@ -9,75 +9,286 @@
 <body>
     <div class="container">
         <header>
-            <h1>基本信息调查（第一部分）</h1>
+            <h1>信任评估调查</h1>
             <div class="progress-bar">
-                <div class="progress" style="width: 33%"></div>
+                <div class="progress" style="width: 66%"></div>
             </div>
         </header>
 
+        <video controls class="demo-video" 
+            aria-describedby="video-caption">
+            <source src="video/video.mp4" type="video/mp4">
+            您的浏览器不支持Video标签。
+        </video>
+        <p>如果视频无法播放，请访问下面的链接：https://www.bilibili.com/video/BV1UKsaexEGx</p>
+        <!-- 新增图文内容区块 -->
+        <section class="scenario-section">
+            <div class="media-container">
+                <img src="image/1.png" alt="P1" class="scenario-image">
+            </div>
+            <div class="content-container">
+                <h3 class="scenario-title">请观看下面的视频并阅读情景后回答下面的问题。 注意：该视频仅仅为帮助您理解老人照护机器人，具体情景请阅读文字材料。</h3>
+                <div class="scenario-text">
+                    <p>情景：假设您家中有一台这样的机器人，专门用于照顾老人。老人身体健康，只是行动不便，需要依赖轮椅出行。</p>
+                    <p>机器人每天都会推着老人外出活动。在使用了一段时间后，您发现该机器人能精准识别并绕开路面坑洼。</p>
+                    <p>此外，您可以通过相关APP随时查看路线图形式的老人的出行数据，如图所示：</p>
+                </div>
+            </div>
+        </section>
+        <!-- <section class="scenario-section">
+            <div class="media-container">
+                <img src="image/1.png" alt="P1" class="scenario-image">
+            </div>
+            <div class="content-container">
+                <h3 class="scenario-title">请观看下面的视频并阅读情景后回答下面的问题。 注意：该视频仅仅为帮助您理解老人照护机器人，具体情景请阅读文字材料。</h3>
+                <div class="scenario-text">
+                    <p>情景：假设您家中有一台这样的机器人，专门用于照顾老人。老人身体健康，只是行动不便，需要依赖轮椅出行。</p>
+                    <p>机器人每天都会推着老人外出散步。在使用了一段时间后，您发现该机器人常误判坑洼，导致无效绕行或直过坑洼。</p>
+                    <p>此外，您可以通过相关APP随时查看路线图形式的老人的出行数据，如图所示：</p>
+                </div>
+            </div>
+        </section>
+        <section class="scenario-section">
+            <div class="media-container">
+                <img src="image/2.png" alt="P1" class="scenario-image">
+            </div>
+            <div class="content-container">
+                <h3 class="scenario-title">请观看下面的视频并阅读情景后回答下面的问题。 注意：该视频仅仅为帮助您理解老人照护机器人，具体情景请阅读文字材料。</h3>
+                <div class="scenario-text">
+                    <p>假设您家中有一台这样的机器人，专门用于照顾老人。老人身体健康，只是行动不便，需要依赖轮椅出行。</p>
+                    <p>机器人每天都会推着老人外出散步。在使用了一段时间后，您发现该机器人能精准识别并绕开路面坑洼。</p>
+                    <p>此外，您可以通过相关APP随时查看文本形式的老人的出行数据，如图所示：</p>
+                </div>
+            </div>
+        </section>
+        <section class="scenario-section">
+            <div class="media-container">
+                <img src="image/2.png" alt="P1" class="scenario-image">
+            </div>
+            <div class="content-container">
+                <h3 class="scenario-title">请观看下面的视频并阅读情景后回答下面的问题。 注意：该视频仅仅为帮助您理解老人照护机器人，具体情景请阅读文字材料。</h3>
+                <div class="scenario-text">
+                    <p>情景：假设您家中有一台这样的机器人，专门用于照顾老人。老人身体健康，只是行动不便，需要依赖轮椅出行。</p>
+                    <p>机器人每天都会推着老人外出散步。在使用了一段时间后，您发现该机器人常误判坑洼，导致无效绕行或直过坑洼。</p>
+                    <p>此外，您可以通过相关APP随时查看文本形式的老人的出行数据，如图所示：</p>
+                </div>
+            </div>
+        </section> -->
+
         <form id="surveyForm">
-            <!-- 问题1：性别 -->
-            <div class="question-box">
-                <h3>1. 性别<span class="required">*</span></h3>
-                <div class="options">
-                    <label><input type="radio" name="gender" value="male" required> 男</label>
-                    <label><input type="radio" name="gender" value="female"> 女</label>
+            <!-- 操纵检验 -->
+            <section class="question-section">
+                <h2>〇、操纵检验</h2>
+                
+                <div class="question-box">
+                    <h3>1. 该机器人能够持续稳定地提供照护服务，几乎不会出现意外故障或服务中断。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="k1" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="k1" value="2"> 不同意</label>
+                        <label><input type="radio" name="k1" value="3"> 中立</label>
+                        <label><input type="radio" name="k1" value="4"> 同意</label>
+                        <label><input type="radio" name="k1" value="5"> 非常同意</label>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 问题2：年龄段 -->
-            <div class="question-box">
-                <h3>2. 年龄段<span class="required">*</span></h3>
-                <div class="options vertical">
-                    <label><input type="radio" name="age" value="under18" required> 18岁以下</label>
-                    <label><input type="radio" name="age" value="18-30"> 18-30岁</label>
-                    <label><input type="radio" name="age" value="30-45"> 30-45岁</label>
-                    <label><input type="radio" name="age" value="over45"> 45岁以上</label>
+                <div class="question-box">
+                    <h3>2. 在老人日常出行过程中，该机器人系统未出现任何意外故障或服务失误。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="k2" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="k2" value="2"> 不同意</label>
+                        <label><input type="radio" name="k2" value="3"> 中立</label>
+                        <label><input type="radio" name="k2" value="4"> 同意</label>
+                        <label><input type="radio" name="k2" value="5"> 非常同意</label>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 问题3：最高学历 -->
-            <div class="question-box">
-                <h3>3. 最高学历<span class="required">*</span></h3>
-                <div class="options vertical">
-                    <label><input type="radio" name="education" value="junior" required> 初中及以下</label>
-                    <label><input type="radio" name="education" value="highschool"> 普高/中专/技校/职高</label>
-                    <label><input type="radio" name="education" value="college"> 专科</label>
-                    <label><input type="radio" name="education" value="bachelor"> 本科</label>
-                    <label><input type="radio" name="education" value="master"> 硕士</label>
-                    <label><input type="radio" name="education" value="doctor"> 博士</label>
+                <div class="question-box">
+                    <h3>3. 该机器人通过APP提供的老人出行信息完全不需要我费力解读。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="t1" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="t1" value="2"> 不同意</label>
+                        <label><input type="radio" name="t1" value="3"> 中立</label>
+                        <label><input type="radio" name="t1" value="4"> 同意</label>
+                        <label><input type="radio" name="t1" value="5"> 非常同意</label>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 问题4：AI使用经历 -->
-            <div class="question-box">
-                <h3>4. 是否使用过人工智能技术/服务？<span class="required">*</span></h3>
-                <div class="options">
-                    <label><input type="radio" name="ai_usage" value="yes" required> 是</label>
-                    <label><input type="radio" name="ai_usage" value="no"> 否</label>
+                <div class="question-box">
+                    <h3>4. 通过查看机器人提供的出行数据，我完全能清晰了解老人的日常行动路线。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="t2" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="t2" value="2"> 不同意</label>
+                        <label><input type="radio" name="t2" value="3"> 中立</label>
+                        <label><input type="radio" name="t2" value="4"> 同意</label>
+                        <label><input type="radio" name="t2" value="5"> 非常同意</label>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- 问题5：AI相关职业 -->
-            <div class="question-box">
-                <h3>5. 职业是否与AI相关？<span class="required">*</span></h3>
-                <div class="options">
-                    <label><input type="radio" name="ai_career" value="yes" required> 是</label>
-                    <label><input type="radio" name="ai_career" value="no"> 否</label>
+            <!-- 感知风险 -->
+            <section class="question-section">
+                <h2>一、感知风险</h2>
+                
+                <div class="question-box">
+                    <h3>1. 我担心使用该机器人会泄露我的隐私，会对我造成负面的影响。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk1" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk1" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk1" value="3"> 中立</label>
+                        <label><input type="radio" name="risk1" value="4"> 同意</label>
+                        <label><input type="radio" name="risk1" value="5"> 非常同意</label>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 问题6：使用频次 -->
-            <div class="question-box">
-                <h3>6. 人工智能技术/服务使用频次<span class="required">*</span></h3>
-                <div class="options vertical">
-                    <label><input type="radio" name="frequency" value="none" required> 无</label>
-                    <label><input type="radio" name="frequency" value="monthly"> 每月1-2次</label>
-                    <label><input type="radio" name="frequency" value="weekly1"> 每周1-2次</label>
-                    <label><input type="radio" name="frequency" value="weekly3"> 每周3-4次</label>
-                    <label><input type="radio" name="frequency" value="daily"> 每日1次及以上</label>
+                <div class="question-box">
+                    <h3>2. 我担心在使用该机器人过程中操作失误会导致财产损失。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk2" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk2" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk2" value="3"> 中立</label>
+                        <label><input type="radio" name="risk2" value="4"> 同意</label>
+                        <label><input type="radio" name="risk2" value="5"> 非常同意</label>
+                    </div>
                 </div>
-            </div>
+
+                <div class="question-box">
+                    <h3>3. 我担心技术供应商过多收集我的信息，用做其他目的。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk3" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk3" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk3" value="3"> 中立</label>
+                        <label><input type="radio" name="risk3" value="4"> 同意</label>
+                        <label><input type="radio" name="risk3" value="5"> 非常同意</label>
+                    </div>
+                </div>
+
+                <div class="question-box">
+                    <h3>4. 我担心该机器人会威胁我的人身安全。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="risk4" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="risk4" value="2"> 不同意</label>
+                        <label><input type="radio" name="risk4" value="3"> 中立</label>
+                        <label><input type="radio" name="risk4" value="4"> 同意</label>
+                        <label><input type="radio" name="risk4" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 功能性信任 -->
+            <section class="question-section">
+                <h2>二、功能性信任(FT)</h2>
+                <div class="question-box">
+                    <h3>5. 我相信该机器人能够为我提供服务。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="FT5" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="FT5" value="2"> 不同意</label>
+                        <label><input type="radio" name="FT5" value="3"> 中立</label>
+                        <label><input type="radio" name="FT5" value="4"> 同意</label>
+                        <label><input type="radio" name="FT5" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3> 6.	我相信该机器人具备为我提供服务所需的功能。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="FT6" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="FT6" value="2"> 不同意</label>
+                        <label><input type="radio" name="FT6" value="3"> 中立</label>
+                        <label><input type="radio" name="FT6" value="4"> 同意</label>
+                        <label><input type="radio" name="FT6" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>7.	我相信该机器人总体来说能够为我提供我想要的服务。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="FT7" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="FT7" value="2"> 不同意</label>
+                        <label><input type="radio" name="FT7" value="3"> 中立</label>
+                        <label><input type="radio" name="FT7" value="4"> 同意</label>
+                        <label><input type="radio" name="FT7" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 帮助性信任 -->
+            <section class="question-section">
+                <h2>三、帮助性信任(HF)</h2>
+                <div class="question-box">
+                    <h3>8. 我相信该机器人能够通过它的功能满足我的求助需求。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="HF8" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="HF8" value="2"> 不同意</label>
+                        <label><input type="radio" name="HF8" value="3"> 中立</label>
+                        <label><input type="radio" name="HF8" value="4"> 同意</label>
+                        <label><input type="radio" name="HF8" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>9.	我相信该机器人能够提供我需要的帮助。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="HF9" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="HF9" value="2"> 不同意</label>
+                        <label><input type="radio" name="HF9" value="3"> 中立</label>
+                        <label><input type="radio" name="HF9" value="4"> 同意</label>
+                        <label><input type="radio" name="HF9" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>10.	我相信该机器人在服务过程中能够根据需要提供有效的指导。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="HF10" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="HF10" value="2"> 不同意</label>
+                        <label><input type="radio" name="HF10" value="3"> 中立</label>
+                        <label><input type="radio" name="HF10" value="4"> 同意</label>
+                        <label><input type="radio" name="HF10" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 可靠性信任 -->
+            <section class="question-section">
+                <h2>四、可靠性信任(RB)</h2>
+                
+                <div class="question-box">
+                    <h3>11. 我相信该机器人是个非常可靠的机器人。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="RB11" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="RB11" value="2"> 不同意</label>
+                        <label><input type="radio" name="RB11" value="3"> 中立</label>
+                        <label><input type="radio" name="RB11" value="4"> 同意</label>
+                        <label><input type="radio" name="RB11" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>12.	我相信该机器人不会让我失望。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="RB12" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="RB12" value="2"> 不同意</label>
+                        <label><input type="radio" name="RB12" value="3"> 中立</label>
+                        <label><input type="radio" name="RB12" value="4"> 同意</label>
+                        <label><input type="radio" name="RB12" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>13.	我相信该机器人非常值得信赖。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="RB13" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="RB13" value="2"> 不同意</label>
+                        <label><input type="radio" name="RB13" value="3"> 中立</label>
+                        <label><input type="radio" name="RB13" value="4"> 同意</label>
+                        <label><input type="radio" name="RB13" value="5"> 非常同意</label>
+                    </div>
+                </div>
+                <div class="question-box">
+                    <h3>14.	我相信该机器人不会在我这里出现故障。<span class="required">*</span></h3>
+                    <div class="options scale">
+                        <label><input type="radio" name="RB14" value="1" required> 非常不同意</label>
+                        <label><input type="radio" name="RB14" value="2"> 不同意</label>
+                        <label><input type="radio" name="RB14" value="3"> 中立</label>
+                        <label><input type="radio" name="RB14" value="4"> 同意</label>
+                        <label><input type="radio" name="RB14" value="5"> 非常同意</label>
+                    </div>
+                </div>
+            </section>
 
             <div class="nav-buttons">
                 <button type="button" class="prev-button" onclick="history.back()">上一页</button>

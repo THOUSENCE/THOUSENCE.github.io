@@ -107,7 +107,7 @@ export const handleSubmit = async () => {
         ip: await getIPAddress(),
         timestamp: new Date().toISOString()
     };
-
+//保存在survey1集合中
     await addDoc(collection(db, "survey1"), formData);
     localStorage.clear();
     } catch (error) {
